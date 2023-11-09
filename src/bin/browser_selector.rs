@@ -1,5 +1,7 @@
 use browser_selector::configuration;
 use clap::Parser;
+use log::info;
+use log::LevelFilter;
 use std::cell::RefCell;
 
 const CONFIGURATION_FILE_NAME: &str = "configuration.toml";
@@ -33,6 +35,19 @@ fn _test_input() {
 }
 
 fn main() {
+    let executable_path = std::env::current_exe().unwrap();
+    let log_file = std::fs::OpenOptions::new()
+        .append(true)
+        .create(true)
+        .open(format!(
+            "{}\\log.log",
+            executable_path.parent().unwrap().display()
+        ))
+        .unwrap();
+    let _ = simple_logging::log_to(log_file, LevelFilter::Info);
+
+    info!("{:?}", std::env::args());
+
     let args = Args::parse();
 
     if args.register {
@@ -42,8 +57,6 @@ fn main() {
         browser_selector::register::unregister();
     }
     if !args.url.is_none() {
-        let executable_path = std::env::current_exe().unwrap();
-
         let config_file = std::fs::File::open(format!(
             "{}\\{}",
             executable_path.parent().unwrap().display(),
