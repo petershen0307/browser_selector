@@ -6,9 +6,9 @@ use std::io;
 
 #[derive(PartialEq, Debug, Serialize, Deserialize)]
 pub struct Configuration {
-    default_browser: String,
-    browsers: HashMap<String, String>,
-    urls: HashMap<String, String>,
+    pub default_browser: String,
+    pub browsers: HashMap<String, String>,
+    pub urls: HashMap<String, String>,
 }
 
 pub fn parse(config_reader: RefCell<impl io::Read>) -> Result<Configuration> {

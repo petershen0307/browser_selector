@@ -1,3 +1,4 @@
+pub mod browser;
 pub mod configuration;
 pub mod register;
 
