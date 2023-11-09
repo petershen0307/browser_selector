@@ -2,6 +2,8 @@ use browser_selector::configuration;
 use clap::Parser;
 use std::cell::RefCell;
 
+const CONFIGURATION_FILE_NAME: &str = "configuration.toml";
+
 /// Simple program to greet a person
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
@@ -32,10 +34,22 @@ fn _test_input() {
 
 fn main() {
     let args = Args::parse();
+
     if args.register {
         browser_selector::register::register();
     }
     if args.unregister {
         browser_selector::register::unregister();
+    }
+    if !args.url.is_none() {
+        let executable_path = std::env::current_exe().unwrap();
+
+        let config_file = std::fs::File::open(format!(
+            "{}\\{}",
+            executable_path.parent().unwrap().display(),
+            CONFIGURATION_FILE_NAME
+        ));
+        let config = configuration::parse(RefCell::new(config_file.unwrap())).unwrap();
+        browser_selector::browser::launch_browser(config, args.url.unwrap())
     }
 }

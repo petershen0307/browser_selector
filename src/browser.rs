@@ -1,11 +1,13 @@
 use std::process::Command;
+use url::Url;
 
 use crate::configuration::Configuration;
 
 pub fn launch_browser(config: Configuration, url: String) {
     // choose the browser
-    let browser_path: &String = match config.urls.get_key_value(&url) {
-        Some((_, v)) => v,
+    let parsed_url = Url::parse(&url).unwrap();
+    let browser_path: &String = match config.urls.get_key_value(parsed_url.host_str().unwrap()) {
+        Some((_, v)) => config.browsers.get(v).unwrap(),
         None => &config.default_browser,
     };
     let _ = Command::new(browser_path).arg(url).status();
@@ -35,7 +37,10 @@ fn test_launch_with_rule() {
             (String::from("chrome"), chrome.to_string()),
             (String::from("msedge"), msedge.to_string()),
         ]),
-        urls: HashMap::from([(String::from("https://google.com"), msedge.to_string())]),
+        urls: HashMap::from([(String::from("www.google.com"), "msedge".to_string())]),
     };
-    launch_browser(config, "https://google.com".to_string());
+    launch_browser(
+        config,
+        r"https://www.google.com/search?q=rust+url+parse".to_string(),
+    );
 }
