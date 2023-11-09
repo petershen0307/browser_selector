@@ -7,15 +7,12 @@ this project inspired by the [blog](https://blog.dantup.com/2015/09/simple-windo
 ## Configuration
 
 ```toml
+default_browser = 'chrome'
 [browsers]
 chrome = 'C:\Program Files (x86)\Google\Chrome\Application\chrome.exe'
 edge = 'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe'
 
-# Url preferences.
-# Only * is treated as a special character (wildcard).
-# Matches are domain-only. Protocols and paths are ignored.
-# Use "*.blah.com" for subdomains, not "*blah.com" as that would also match "abcblah.com".
+# just the domain name
 [urls]
-microsoft.com = 'edge'
-*.microsoft.com = 'edge'
+'microsoft.com' = 'edge'
 ```

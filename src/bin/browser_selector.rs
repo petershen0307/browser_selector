@@ -1,4 +1,6 @@
+use browser_selector::configuration;
 use clap::Parser;
+use std::cell::RefCell;
 
 /// Simple program to greet a person
 #[derive(Parser, Debug)]
@@ -19,8 +21,11 @@ struct Args {
 
 fn main() {
     let args = Args::parse();
-
     println!("register: {}!", args.register);
     println!("unregister: {}!", args.unregister);
     println!("url: {}!", args.url.unwrap_or_default());
+
+    let file = std::fs::File::open("configuration.toml");
+    let config = configuration::parse(RefCell::new(file.unwrap())).unwrap();
+    println!("{:?}", config);
 }
