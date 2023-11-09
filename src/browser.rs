@@ -6,9 +6,16 @@ use crate::configuration::Configuration;
 pub fn launch_browser(config: Configuration, url: String) {
     // choose the browser
     let parsed_url = Url::parse(&url).unwrap();
-    let browser_path: &String = match config.urls.get_key_value(parsed_url.host_str().unwrap()) {
-        Some((_, v)) => config.browsers.get(v).unwrap(),
-        None => &config.default_browser,
+    let url_pattern: Vec<(&String, &String)> = config
+        .urls
+        .iter()
+        .filter(|(key, _)| -> bool { parsed_url.host_str().unwrap().contains(key.as_str()) })
+        .collect();
+
+    let browser_path: &String = if url_pattern.is_empty() {
+        &config.default_browser
+    } else {
+        config.browsers.get(url_pattern.first().unwrap().1).unwrap()
     };
     let _ = Command::new(browser_path).arg(url).status();
 }
@@ -37,7 +44,10 @@ fn test_launch_with_rule() {
             (String::from("chrome"), chrome.to_string()),
             (String::from("msedge"), msedge.to_string()),
         ]),
-        urls: HashMap::from([(String::from("www.google.com"), "msedge".to_string())]),
+        urls: HashMap::from([
+            (String::from("google.com"), "msedge".to_string()),
+            ("microsoft.com".to_string(), "msedge".to_string()),
+        ]),
     };
     launch_browser(
         config,
