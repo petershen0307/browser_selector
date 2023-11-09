@@ -19,7 +19,7 @@ struct Args {
     url: Option<String>,
 }
 
-fn main() {
+fn _test_input() {
     let args = Args::parse();
     println!("register: {}!", args.register);
     println!("unregister: {}!", args.unregister);
@@ -28,4 +28,14 @@ fn main() {
     let file = std::fs::File::open("configuration.toml");
     let config = configuration::parse(RefCell::new(file.unwrap())).unwrap();
     println!("{:?}", config);
+}
+
+fn main() {
+    let args = Args::parse();
+    if args.register {
+        browser_selector::register::register();
+    }
+    if args.unregister {
+        browser_selector::register::unregister();
+    }
 }

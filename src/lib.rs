@@ -1,4 +1,5 @@
 pub mod configuration;
+pub mod register;
 
 /// Error returned by most functions.
 ///
