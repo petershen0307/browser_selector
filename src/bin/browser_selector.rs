@@ -1,3 +1,5 @@
+#![windows_subsystem = "windows"]
+
 use browser_selector::configuration;
 use clap::Parser;
 use log::debug;
