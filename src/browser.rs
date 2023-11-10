@@ -14,7 +14,7 @@ pub fn launch_browser(config: Configuration, url: String) {
         .collect();
 
     let browser_path: &String = if url_pattern.is_empty() {
-        &config.default_browser
+        config.browsers.get(&config.default_browser).unwrap()
     } else {
         config.browsers.get(url_pattern.first().unwrap().1).unwrap()
     };
@@ -41,7 +41,7 @@ fn test_launch_with_rule() {
     let chrome = r"C:\Program Files\Google\Chrome\Application\chrome.exe";
     let msedge = r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe";
     let config = Configuration {
-        default_browser: chrome.to_string(),
+        default_browser: "chrome".to_string(),
         browsers: HashMap::from([
             (String::from("chrome"), chrome.to_string()),
             (String::from("msedge"), msedge.to_string()),
