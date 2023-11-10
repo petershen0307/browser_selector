@@ -1,6 +1,6 @@
 use browser_selector::configuration;
 use clap::Parser;
-use log::info;
+use log::debug;
 use log::LevelFilter;
 use std::cell::RefCell;
 
@@ -46,7 +46,7 @@ fn main() {
         .unwrap();
     let _ = simple_logging::log_to(log_file, LevelFilter::Info);
 
-    info!("{:?}", std::env::args());
+    debug!("{:?}", std::env::args());
 
     let args = Args::parse();
 

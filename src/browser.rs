@@ -1,3 +1,4 @@
+use log::debug;
 use std::process::Command;
 use url::Url;
 
@@ -17,6 +18,7 @@ pub fn launch_browser(config: Configuration, url: String) {
     } else {
         config.browsers.get(url_pattern.first().unwrap().1).unwrap()
     };
+    debug!("browser path: {}", browser_path);
     let _ = Command::new(browser_path).arg(url).status();
 }
 
