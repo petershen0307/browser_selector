@@ -10,7 +10,9 @@ pub fn launch_browser(config: Configuration, url: String) {
     let url_pattern: Vec<(&String, &String)> = config
         .urls
         .iter()
-        .filter(|(key, _)| -> bool { parsed_url.host_str().unwrap().contains(key.as_str()) })
+        .filter(|(key, _)| -> bool {
+            wildmatch::WildMatch::new(key.as_str()).matches(parsed_url.host_str().unwrap())
+        })
         .collect();
 
     let browser_path: &String = if url_pattern.is_empty() {

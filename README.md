@@ -15,4 +15,5 @@ msedge = 'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe'
 # just the domain name
 [urls]
 'microsoft.com' = 'msedge'
+'*google*' = 'chrome'
 ```
