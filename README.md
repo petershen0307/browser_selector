@@ -17,3 +17,17 @@ msedge = 'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe'
 'microsoft.com' = 'msedge'
 '*google*' = 'chrome'
 ```
+
+## how to use
+
+### register browser_selector as a system application
+
+`browser_selector.exe --register`
+
+### go to default setting
+
+change web browser default app to `browser_selector.exe`
+
+## unregister
+
+`browser_selector.exe --unregister`
