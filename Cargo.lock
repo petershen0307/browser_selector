@@ -51,9 +51,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "anyhow"
+version = "1.0.86"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b3d1d046238990b9cf5bcde22a3fb3584ee5cf65fb2765f454ed428c7a0063da"
+
+[[package]]
 name = "browser_selector"
 version = "0.1.0"
 dependencies = [
+ "anyhow",
  "clap",
  "log",
  "serde",
@@ -61,6 +68,7 @@ dependencies = [
  "simple-logging",
  "toml",
  "url",
+ "urlencoding",
  "wildmatch",
  "winreg",
 ]
@@ -366,6 +374,12 @@ dependencies = [
  "idna",
  "percent-encoding",
 ]
+
+[[package]]
+name = "urlencoding"
+version = "2.1.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "daf8dba3b7eb870caf1ddeed7bc9d2a049f3cfdfae7cb521b087cc33ae4c49da"
 
 [[package]]
 name = "utf8parse"

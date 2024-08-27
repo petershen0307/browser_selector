@@ -1,5 +1,6 @@
 #![windows_subsystem = "windows"]
 
+use anyhow::Ok;
 use browser_selector::configuration;
 use clap::Parser;
 use log::debug;
@@ -36,7 +37,7 @@ fn _test_input() {
     println!("{:?}", config);
 }
 
-fn main() {
+fn main() -> anyhow::Result<()> {
     let executable_path = std::env::current_exe().unwrap();
     let log_file = std::fs::OpenOptions::new()
         .append(true)
@@ -46,7 +47,7 @@ fn main() {
             executable_path.parent().unwrap().display()
         ))
         .unwrap();
-    let _ = simple_logging::log_to(log_file, LevelFilter::Info);
+    simple_logging::log_to(log_file, LevelFilter::Error);
 
     debug!("{:?}", std::env::args());
 
@@ -58,13 +59,14 @@ fn main() {
     if args.unregister {
         browser_selector::register::unregister();
     }
-    if !args.url.is_none() {
+    if args.url.is_some() {
         let config_file = std::fs::File::open(format!(
             "{}\\{}",
             executable_path.parent().unwrap().display(),
             CONFIGURATION_FILE_NAME
         ));
         let config = configuration::parse(RefCell::new(config_file.unwrap())).unwrap();
-        browser_selector::browser::launch_browser(config, args.url.unwrap())
+        browser_selector::browser::launch_browser(config, args.url.unwrap())?;
     }
+    Ok(())
 }
