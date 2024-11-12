@@ -53,6 +53,7 @@ fn main() -> anyhow::Result<()> {
 
     let args = Args::parse();
 
+    debug!("{:?}", args);
     if args.register {
         browser_selector::register::register();
     }
@@ -60,12 +61,17 @@ fn main() -> anyhow::Result<()> {
         browser_selector::register::unregister();
     }
     if args.url.is_some() {
-        let config_file = std::fs::File::open(format!(
+        let config_file = format!(
             "{}\\{}",
             executable_path.parent().unwrap().display(),
             CONFIGURATION_FILE_NAME
-        ));
-        let config = configuration::parse(RefCell::new(config_file.unwrap())).unwrap();
+        );
+        debug!("configuration file path={}", config_file);
+        let config_file = std::fs::File::open(config_file);
+        let config = configuration::parse(RefCell::new(
+            config_file.expect("configuration file should be opened"),
+        ))
+        .expect("configuration file should be parsed");
         browser_selector::browser::launch_browser(config, args.url.unwrap())?;
     }
     Ok(())

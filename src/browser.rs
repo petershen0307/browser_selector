@@ -23,9 +23,15 @@ pub fn launch_browser(config: Configuration, url: String) -> anyhow::Result<()> 
         .collect();
 
     let browser_path: &String = if url_pattern.is_empty() {
-        config.browsers.get(&config.default_browser).unwrap()
+        config
+            .browsers
+            .get(&config.default_browser)
+            .expect("should got default browser path")
     } else {
-        config.browsers.get(url_pattern.first().unwrap().1).unwrap()
+        config
+            .browsers
+            .get(url_pattern.first().unwrap().1)
+            .expect("should get browser path")
     };
     debug!("browser path: {}", browser_path);
     Command::new(browser_path)
@@ -36,11 +42,29 @@ pub fn launch_browser(config: Configuration, url: String) -> anyhow::Result<()> 
 
 #[ignore]
 #[test]
-fn test_launch_default() {
+fn test_launch_chrome() {
     use std::collections::HashMap;
     let config = Configuration {
-        default_browser: String::from(r"C:\Program Files\Google\Chrome\Application\chrome.exe"),
-        browsers: HashMap::new(),
+        default_browser: "chrome".to_string(),
+        browsers: HashMap::from([(
+            String::from("chrome"),
+            r"C:\Program Files\Google\Chrome\Application\chrome.exe".to_string(),
+        )]),
+        urls: HashMap::new(),
+    };
+    assert!(launch_browser(config, "https://google.com".to_string()).is_ok());
+}
+
+#[ignore]
+#[test]
+fn test_launch_msedge() {
+    use std::collections::HashMap;
+    let config = Configuration {
+        default_browser: "chrome".to_string(),
+        browsers: HashMap::from([(
+            String::from("chrome"),
+            r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe".to_string(),
+        )]),
         urls: HashMap::new(),
     };
     assert!(launch_browser(config, "https://google.com".to_string()).is_ok());
